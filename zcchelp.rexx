@@ -14,5 +14,10 @@ end
 
 address ZCCREXX verb'?'
 
-call ZCCREXX(OFF)     /* remove ZCCREXX host command environment */
+if return_code <> -100 then do
+  do i = 1 to ZCERRM.0
+   say ZCERRM.i
+  end
+end
 
+call ZCCREXX(OFF)     /* remove ZCCREXX host command environment */
