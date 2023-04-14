@@ -38,7 +38,7 @@ Whereas, ZCCREXX requires much less code:
 rule_array_count     = 1        /* Note: integer, not binary '00000001'x */
 rule_array           = "ODD"    /* Note: no padding required */
 random_number_length = 24
-address ZCCREXX "CSNBRNGL"      /* Note: no need to supply arguments */
+address ZCCREXX "CSNBRNGL"      /* Note: no need to supply verb parameters */
 /* Note: a result "banner" is automatically SAYed, displaying return_code and reason_code */
 if return_code = 0 then do
   say "Random number:" C2X(random_number)
