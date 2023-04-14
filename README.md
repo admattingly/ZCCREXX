@@ -1,6 +1,7 @@
 # ZCCREXX
 ## A REXX Productivity Tool for calling the IBM Common Cryptographic Architecture (CCA) API on z/OS
 This tool drammatically simplifies the process of calling the IBM CCA API from REXX by providing a REXX "host command environment" that understands how to call CCA verbs and only requires you to populate the required verb arguments, providing default values for the rest.  It knows the data type and length of each argument, so integer arguments can be provided as REXX integers, rather than having to convert them to 4-byte binary form.  Similarly text arguments (e.g. key labels) can be provided as a string of any length, which ZCCREXX will automatically pad with spaces to the the required length (e.g. 64 characters for a key label).
+
 To understand the value that ZCCREXX brings, let's look at an example of generating a random number using the CCA verb, CSNBRNGL.  To call CSNBRNGL directly from REXX, the code would look something like this:
 ```
 return_code          = D2C(0, 4)
