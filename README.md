@@ -42,3 +42,5 @@ if return_code = 0 then do
   say "Random number:" C2X(random_number)
 end
 ```
+## Installation
+Upload the file, `zccrexx.seq`, to your z/OS system.  Make sure the file transfer uses BINARY mode (i.e. no character set translation).  Also make sure that the destination data set on z/OS has LRECL=80 and RECFM=FB (or F). 
