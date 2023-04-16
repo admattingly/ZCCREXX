@@ -20,6 +20,10 @@ end
 /* gather ACPs */
 offset = 1
 n = 0
+description_offset = 1
+description = ""
+max_enables = 0
+max_desc_len = 0
 do while offset <= reply_data_block_length
   record_type = SUBSTR(reply_data_block, offset, 1)
   if record_type = '01'x then do        /* group header - not interesting */
@@ -29,18 +33,25 @@ do while offset <= reply_data_block_length
   else if record_type = '02'x then do   /* ACP description */
     acp_index          = SUBSTR(reply_data_block, offset + 1, 2)    /* leave in binary form for correct sorting */
     description_length = C2D(SUBSTR(reply_data_block, offset + 3, 4))
-    description        = toEBCDIC(SUBSTR(reply_data_block, offset + 7, description_length))
+    text               = SUBSTR(reply_data_block, offset + 7, description_length)
+    description        = description || text 
     bit_mask           = SUBSTR(reply_data_block, offset + 7 + description_length, 4)
     enable_list_count  = C2D(SUBSTR(reply_data_block, offset + 11 + description_length, 4))
+    enable_list        = SUBSTR(reply_data_block, offset + 15 + description_length, 2 * enable_list_count)
     offset             = offset + 15 + description_length + 2 * enable_list_count
     n                  = n + 1
-    acp.n              = acp_index||description
+    acp.n              = acp_index || D2C(description_offset, 4) || D2C(description_length, 4) ||,
+                                      bit_mask || D2C(enable_list_count, 4)  || enable_list
+    description_offset = description_offset + description_length
+    if description_length > max_desc_len then max_desc_len = description_length
+    if enable_list_count > max_enables then max_enables = enable_list_count
   end
   else do
     say "*** OOPS - unrecognized record type "
     signal done
   end
 end
+description = toEBCDIC(description)
 
 /* sort by acp index */
 acp.0 = n
@@ -48,9 +59,24 @@ call sort(acp)
 
 /* print out ACPs */
 say "Enabled Access Control Points for target_pci_coprocessor:" target_pci_coprocessor
+say " "
+say "Index Mandatory" LEFT("Pre-reqs", max_enables * 5 - 1) "Description"
+say "----- ---------" COPIES("-", max_enables * 5 - 1) COPIES("-", max_desc_len)
 do i = 1 to acp.0
-  say C2X(LEFT(acp.i, 2)) SUBSTR(acp.i, 3)
+  mandatory = BITAND(SUBSTR(acp.i, 11, 4), '80000000'x)
+  flag = " "
+  if mandatory = '80000000'x then do
+    flag = "Y" 
+  end
+  prereqs = ""
+  enable_list_count = C2D(SUBSTR(acp.i, 15, 4))
+  do j = 1 to enable_list_count
+    prereqs = prereqs || C2X(SUBSTR(acp.i, 17 + 2 * j, 2)) || " "
+  end
+  say " "C2X(LEFT(acp.i, 2))"     "flag"     "LEFT(prereqs, 5 * max_enables)||,
+      SUBSTR(description, C2D(SUBSTR(acp.i, 3, 4)), C2D(SUBSTR(acp.i, 7, 4)))
 end
+
 
 done:
 call ZCCREXX(OFF)   /* remove ZCCREXX host command environment */
