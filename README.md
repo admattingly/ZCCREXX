@@ -173,7 +173,7 @@ Use this variable to set the number of spaces SAYed at the start of each line of
 
 Note that the setting of ZCCERRINDENT has no effect on the stem variable, ZCCERRM.
 ## Restrictions
-ZCCREXX implements the full gamut of (156) z/OS ICSF CCA verbs, with the following exceptions:
-1. Privileged verbs: CSFACEE, CSFWRP and CSFPCI are not supported.
+ZCCREXX implements the full gamut of (157) z/OS ICSF CCA verbs, with the following exceptions:
+1. Privileged verbs: CSFACEE and CSFWRP are not supported.
 2. CSNBxxx1 and CSNBxxx3 variants of data protection and integrity verbs (e.g. CSNBENC1, CSNBCTT3, etc), that accept an ALET for some parameters, are not supported.  For those base functions that accept an ALET parameter (i.e. CSNBFLD and CSNBFLE), a non-zero ALET value is ignored, forcing all parameter values to be sourced from the primary address space.
 3. 64-bit verbs (i.e. CSFxxx6, CSNExxx and CSNFxxx) are not supported.
