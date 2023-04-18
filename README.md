@@ -110,7 +110,7 @@ CSNBRNGL - Random Number Generate
     String   exit_data
     String   random_number
 ```
-A REXX program, `zcchelp.rexx`, is provided to facilitate displaying the parameters for a CCA verb.
+A REXX program, [`zcchelp.rexx`](https://github.com/admattingly/ZCCREXX/blob/main/zcchelp.rexx), is provided to facilitate displaying the parameters for a CCA verb.
 ### Samples
 The [`samples`](https://github.com/admattingly/ZCCREXX/tree/main/samples) folder contains a number of REXX programs which demonstrate how to use ZCCREXX.  Feel free to use them as you see fit!
 ### ZCPACK Function
