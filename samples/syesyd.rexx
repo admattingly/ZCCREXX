@@ -1,5 +1,5 @@
 /* REXX */
-/* demonstrate protected key encrypt/decrypt unsing CSNBSYE/SYD */
+/* demonstrate protected key encrypt/decrypt using CSNBSYE/SYD */
 
 call ZCCREXX(ON)    /* install ZCCREXX host command environment */
 address ZCCREXX     /* route commands to ZCCREXX by default     */
