@@ -112,7 +112,7 @@ CSNBRNGL - Random Number Generate
 ```
 A REXX program, `zcchelp.rexx`, is provided to facilitate displaying the parameters for a CCA verb.
 ### Samples
-The _samples_ folder contains a number of REXX programs which demonstrate how to use ZCCREXX.  Feel free to use them as you see fit!
+The [samples](https://github.com/admattingly/ZCCREXX/tree/main/samples) folder contains a number of REXX programs which demonstrate how to use ZCCREXX.  Feel free to use them as you see fit!
 ### ZCPACK Function
 Several CCA verb parameters, particularly the _rule_array_ parameter, must be supplied as a concatenation of one or more fixed-length (typically 8-character) strings.  To make your code more legible, and to avoid errors specifying such parameters, ZCCREXX supplies a built-in function called __ZCPACK__.
 
