@@ -48,13 +48,13 @@ end
 Upload the file, [`zccrexx.xmit`](https://github.com/admattingly/ZCCREXX/blob/main/zccrexx.xmit), to your z/OS system.  Make sure the file transfer uses __BINARY__ mode (i.e. no ASCII/EBCDIC translation).  Also make sure that the destination data set on z/OS has __LRECL=80__ and __RECFM=FB__ (or F).
 
 Then use the TSO __RECEIVE__ command to convert this data set to a PDSE.  For example:
-```
-receive inda('zccrexx.xmit')
+<pre>
+<b>receive inda('zccrexx.xmit')</b>
  INMR901I Dataset ZCX100.SZCXLOAD from ADCDMST on S0W1   
  INMR154I The incoming data set is a 'PROGRAM LIBRARY'.  
  INMR906A Enter restore parameters or 'DELETE' or 'END' +
-da('zccrexx.load')
-```
+<b>da('zccrexx.load')</b>
+</pre>
 Finally, make sure that this PDSE is in the STEPLIB concatenation (typically, or somewhere in the REXX external function search order. See: https://www.ibm.com/docs/en/zos/2.5.0?topic=subroutines-search-order) for the environment(s) where you are running your REXX programs.
 ## Programming with ZCCREXX
 ### The Basics
