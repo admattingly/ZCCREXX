@@ -3,7 +3,7 @@
 ## Introduction
 This tool drammatically simplifies the process of calling the IBM CCA and PKCS #11 Callable Services from REXX by providing a REXX "host command environment" that understands how to call CCA and PKCS #11 verbs and only requires you to populate the required verb parameters, providing default values for the rest.  It knows the data type and length of each parameter, so integer parameters can be provided as REXX integers, rather than having to convert them to 4-byte binary form.  Similarly text parameters (e.g. key labels) can be provided as a string of any length, which ZCCREXX will automatically pad with spaces to the the required length (e.g. 64 characters for a key label).
 
-To understand the value that ZCCREXX brings, let's look at an example of generating a random number using the CCA verb, CSNBRNGL (see: https://www.ibm.com/docs/en/zos/2.5.0?topic=keys-random-number-generate-csnbrng-csnerng-csnbrngl-csnerngl).  
+To understand the value that ZCCREXX brings, let's look at an example of generating a random number using the CCA verb, CSNBRNGL (see: https://www.ibm.com/docs/en/zos/3.1.0?topic=keys-random-number-generate-csnbrng-csnerng-csnbrngl-csnerngl).  
 
 Without ZCCREXX, to call CSNBRNGL directly from REXX, the code would look something like this:
 ```
@@ -55,7 +55,7 @@ Then use the TSO __RECEIVE__ command to convert this data set to a PDSE.  For ex
  INMR906A Enter restore parameters or 'DELETE' or 'END' +
 <b>da('zccrexx.load')</b>
 </pre>
-Finally, make sure that this PDSE is in the STEPLIB concatenation (typically, or somewhere in the REXX external function search order. See: https://www.ibm.com/docs/en/zos/2.5.0?topic=subroutines-search-order) for the environment(s) where you are running your REXX programs.
+Finally, make sure that this PDSE is in the STEPLIB concatenation (typically, or somewhere in the REXX external function search order. See: https://www.ibm.com/docs/en/zos/3.1.0?topic=subroutines-search-order) for the environment(s) where you are running your REXX programs.
 ## Programming with ZCCREXX
 ### The Basics
 To use ZCCREXX in your REXX program, you must install the ZCCREXX _host command environment_, and as a matter of good _hygiene_, you should remove it when no longer needed.  Once installed, you can (optionally) make ZCCREXX the default command environment using the ADDRESS statement.  For example:
@@ -201,7 +201,7 @@ Use this variable to set the number of spaces SAYed at the start of each line of
 
 Note that the setting of ZCCERRINDENT has no effect on the stem variable, ZCCERRM.
 ## Restrictions
-ZCCREXX implements the full gamut of (157) z/OS ICSF CCA verbs, with the following exceptions:
+ZCCREXX implements the full gamut of (183) z/OS ICSF CCA and PKCS #11 verbs, with the following exceptions:
 1. Privileged verbs: CSFACEE and CSFWRP are not supported.
 2. CSNBxxx1 and CSNBxxx3 variants of data protection and integrity verbs (e.g. CSNBENC1, CSNBCTT3, etc), that accept an ALET for some parameters, are not supported.  For those base functions that accept an ALET parameter (i.e. CSNBFLD and CSNBFLE), a non-zero ALET value is ignored, forcing all parameter values to be sourced from the primary address space.
 3. 64-bit verbs (i.e. CSFxxx6, CSNExxx and CSNFxxx) are not supported.
