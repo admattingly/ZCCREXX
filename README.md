@@ -1,7 +1,7 @@
 # ZCCREXX
-### A REXX Productivity Tool for calling the IBM Common Cryptographic Architecture (CCA) API on z/OS
+### A REXX Productivity Tool for calling the IBM Common Cryptographic Architecture (CCA) and IBM PKCS #11 Callable Services on z/OS
 ## Introduction
-This tool drammatically simplifies the process of calling the IBM CCA API from REXX by providing a REXX "host command environment" that understands how to call CCA verbs and only requires you to populate the required verb parameters, providing default values for the rest.  It knows the data type and length of each parameter, so integer parameters can be provided as REXX integers, rather than having to convert them to 4-byte binary form.  Similarly text parameters (e.g. key labels) can be provided as a string of any length, which ZCCREXX will automatically pad with spaces to the the required length (e.g. 64 characters for a key label).
+This tool drammatically simplifies the process of calling the IBM CCA and PKCS #11 Callable Services from REXX by providing a REXX "host command environment" that understands how to call CCA and PKCS #11 verbs and only requires you to populate the required verb parameters, providing default values for the rest.  It knows the data type and length of each parameter, so integer parameters can be provided as REXX integers, rather than having to convert them to 4-byte binary form.  Similarly text parameters (e.g. key labels) can be provided as a string of any length, which ZCCREXX will automatically pad with spaces to the the required length (e.g. 64 characters for a key label).
 
 To understand the value that ZCCREXX brings, let's look at an example of generating a random number using the CCA verb, CSNBRNGL (see: https://www.ibm.com/docs/en/zos/2.5.0?topic=keys-random-number-generate-csnbrng-csnerng-csnbrngl-csnerngl).  
 
@@ -73,9 +73,9 @@ end
 
 call ZCCREXX(OFF)             /* Remove the ZCCREXX host command environment */
 ```
-To call a CCA verb, consult the "CCA callable services" section of the "IBM z/OS Cryptographic Services ICSF Application Programmer's Guide" (see: https://www.ibm.com/docs/en/zos/2.5.0?topic=guide-cca-callable-services) for a description of the parameters passed to that verb.  ZCCREXX expects you to populate REXX variables with the required inputs before invoking the verb.  The REXX variables must be named exactly as the parameters are named in the IBM documentation.  Note, however, that REXX variable names are not case-sensitive. You do not need to define variables for optional input parameters or output-only parameters - ZCCREXX automatically sets null values for these parameters and populates REXX variables for the output parameters on return from calling the CCA verb.
+To call a CCA verb consult the "CCA callable services" section, or to call a PKCS #11 verb consult the "PKCS #11 callable services" section of the "IBM z/OS Cryptographic Services ICSF Application Programmer's Guide" (see: https://www.ibm.com/docs/en/zos/3.1.0?topic=guide-cca-callable-services or https://www.ibm.com/docs/en/zos/3.1.0?topic=guide-pkcs-11-callable-services) for a description of the parameters passed to each verb.  ZCCREXX expects you to populate REXX variables with the required inputs before invoking the verb.  The REXX variables must be named exactly as the parameters are named in the IBM documentation.  Note, however, that REXX variable names are not case-sensitive. You do not need to define variables for optional input parameters or output-only parameters - ZCCREXX automatically sets null values for these parameters and populates REXX variables for the output parameters on return from calling each verb.
 ### Getting Help
-If you place a question mark at the end of the CCA verb when invoking it using ZCCREXX, the verb is not executed.  Instead, ZCCREXX will SAY all the input and output parameters for that verb.
+If you place a question mark at the end of the verb when invoking it using ZCCREXX, the verb is not executed.  Instead, ZCCREXX will SAY all the input and output parameters for that verb.
 
 For example, this REXX program:
 ```
@@ -110,11 +110,11 @@ CSNBRNGL - Random Number Generate
     String   exit_data
     String   random_number
 ```
-A REXX program, [`zcchelp.rexx`](https://github.com/admattingly/ZCCREXX/blob/main/zcchelp.rexx), is provided to facilitate displaying the parameters for a CCA verb.
+A REXX program, [`zcchelp.rexx`](https://github.com/admattingly/ZCCREXX/blob/main/zcchelp.rexx), is provided to facilitate displaying the parameters for each verb.
 ### Samples
 The [`samples`](https://github.com/admattingly/ZCCREXX/tree/main/samples) folder contains a number of REXX programs which demonstrate how to use ZCCREXX.  Feel free to use them as you see fit!
 ### ZCPACK Function
-Several CCA verb parameters, particularly the _rule_array_ parameter, must be supplied as a concatenation of one or more fixed-length (typically 8-character) strings.  To make your code more legible, and to avoid errors specifying such parameters, ZCCREXX supplies a built-in function called __ZCPACK__.
+Several verb parameters, particularly the _rule_array_ parameter, must be supplied as a concatenation of one or more fixed-length (typically 8-character) strings.  To make your code more legible, and to avoid errors specifying such parameters, ZCCREXX supplies a built-in function called __ZCPACK__.
 
 This function takes two arguments:
 1. (Mandatory) a space-delimited string comprising the words to be concatenated as fixed-length components of the output string.
@@ -131,6 +131,34 @@ ZCPACK("quick  brown   fox") -> "quick    brown          fox     "
 /*                               |-------|-------|-------|------- */
 ```
 Several of the sample REXX programs provided here demonstrate the use of the ZCPACK function.
+### ZCALIST Function
+Many PKCS #11 callable services require attribute lists to be supplied in a specific format (see: https://www.ibm.com/docs/en/zos/3.1.0?topic=services-attribute-list-format).  To make your code more legible, and to avoid errors specifying such parameters, ZCCREXX supplies a built-in function called __ZCALIST__.
+
+This function takes an even number of arguments.  Each pair of arguments comprises a 4-byte _name_ and a _value_. A binary string is returned, comprised of a 2-byte binary count of the number of attributes contained in the list, followed by that number of _triplets_, each comprised of a 4-byte binary _name_, 2-byte value length and the _value_.
+
+The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys) demonstrates the use of the ZCALIST function.
+### ZCOID Function
+Some PKCS #11 attributes must be provided as a DER-encoded ASN.1 Object Identifier (OID).  To generate a DER-encoded OID as a binary string, ZCCREXX supplies a built-in function called __ZCOID__.
+
+This function takes a single argument.  This argument is the OID to be encoded, formatted as dotted-decimal string or space-delimited list of decimal node values.
+
+Here are some examples of ZCOID in action:
+```
+ZCOID("1.3.132.0.35")             -> '06052B81040023'x
+ZCOID("1 3 6 1 4 1 2 267 1 6 5")  -> '060B2B0601040102820B010605'x
+```
+The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys) demonstrates the use of the ZCOID function.
+### ZCPDEFS Function
+To initialize REXX variables for all the constants required by the IBM PKCS #11 callable services, ZCCREXX supplies a built-in function called __ZCPDEFS__.
+
+This function takes no arguments.
+
+Each constant is defined in the _forward_ and _reverse_ direction, which permits the name of a constant of a particular type to be retrieved, based on its value.  For example:
+```
+CKK_IBM_DILITHIUM    -> '80010023'x
+CKK.X80010023        -> "CKK_IBM_DILITHIUM"
+```
+The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys) demonstrates the use of the ZCPDEFS function.
 ## Pre-defined Variables
 ZCCREXX recognises a set of (optional) pre-defined REXX variables, which can be used to customise the behavior of, or retrieve information about, ZCCREXX processing.
 ### ZCVERB
