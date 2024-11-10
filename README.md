@@ -136,7 +136,7 @@ Many PKCS #11 callable services require attribute lists to be supplied in a spec
 
 This function takes an even number of arguments.  Each pair of arguments comprises a 4-byte _name_ and a _value_. A binary string is returned, comprised of a 2-byte binary count of the number of attributes contained in the list, followed by that number of _triplets_, each comprised of a 4-byte binary _name_, 2-byte value length and the _value_.
 
-The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys) demonstrates the use of the ZCALIST function.
+The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys.rexx) demonstrates the use of the ZCALIST function.
 ### ZCOID Function
 Some PKCS #11 attributes must be provided as a DER-encoded ASN.1 Object Identifier (OID).  To generate a DER-encoded OID as a binary string, ZCCREXX supplies a built-in function called __ZCOID__.
 
@@ -147,7 +147,7 @@ Here are some examples of ZCOID in action:
 ZCOID("1.3.132.0.35")             -> '06052B81040023'x
 ZCOID("1 3 6 1 4 1 2 267 1 6 5")  -> '060B2B0601040102820B010605'x
 ```
-The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys) demonstrates the use of the ZCOID function.
+The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys.rexx) demonstrates the use of the ZCOID function.
 ### ZCPDEFS Function
 To initialize REXX variables for all the constants required by the IBM PKCS #11 callable services, ZCCREXX supplies a built-in function called __ZCPDEFS__.
 
@@ -158,7 +158,7 @@ Each constant is defined in the _forward_ and _reverse_ direction, which permits
 CKK_IBM_DILITHIUM    -> '80010023'x
 CKK.X80010023        -> "CKK_IBM_DILITHIUM"
 ```
-The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys) demonstrates the use of the ZCPDEFS function.
+The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys.rexx) demonstrates the use of the ZCPDEFS function.
 ## Pre-defined Variables
 ZCCREXX recognises a set of (optional) pre-defined REXX variables, which can be used to customise the behavior of, or retrieve information about, ZCCREXX processing.
 ### ZCVERB
