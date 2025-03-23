@@ -61,7 +61,7 @@ int main(int                    rs1,
     int             n, textlen;
     char            *text, result[64];
 
-    /* make a copy of the ENVB pointer in case we mess up GR0 */
+    /* make a copy of the ENVBLOCK pointer in case we mess up GR0 */
     penvb = envb;
 
     /* set a NULL result for our function to keep REXX happy.
