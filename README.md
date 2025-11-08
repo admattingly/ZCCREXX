@@ -83,7 +83,7 @@ For example, this REXX program:
 trace o
 ZCERRSAY = 0
 call ZCCREXX(ON)              /* Install the ZCCREXX host command environment */
-address ZCCREXX "CSNBRNGL?"
+"CSNBRNGL?"                   /* Add a question mark (?) to verb name */
 call ZCCREXX(OFF)             /* Remove the ZCCREXX host command environment */
 ```
 produces the following output:
