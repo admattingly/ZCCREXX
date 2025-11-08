@@ -130,6 +130,11 @@ ZCPACK("quick brown fox", 4) -> "quicbrowfox "
 ZCPACK("quick  brown   fox") -> "quick    brown          fox     "
 /*                               |-------|-------|-------|------- */
 ```
+Here's a typical example of using ZCPACK to populate the _rule_array_ and _rule_array_count_ parameters, leveraging the fact that ZCPACK will return a string that is suitably padded to a multiple of 8 characters:
+```
+rule_array = ZCPACK("DES INTERNAL DOUBLE NO-KEY KEY-PART")
+rule_array_count = LENGTH(rule_array) / 8
+```
 Several of the sample REXX programs provided here demonstrate the use of the ZCPACK function.
 ### ZCALIST Function
 Many PKCS #11 callable services require attribute lists to be supplied in a specific format (see: https://www.ibm.com/docs/en/zos/3.1.0?topic=services-attribute-list-format).  To make your code more legible, and to avoid errors specifying such parameters, ZCCREXX supplies a built-in function called __ZCALIST__.
