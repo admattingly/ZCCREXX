@@ -161,6 +161,8 @@ CKK.X80010023        -> "CKK_IBM_DILITHIUM"
 The sample REXX program, [`smfkeys`](https://github.com/admattingly/ZCCREXX/tree/main/samples/smfkeys.rexx) demonstrates the use of the ZCPDEFS function.
 ## Pre-defined Variables
 ZCCREXX recognises a set of (optional) pre-defined REXX variables, which can be used to customise the behavior of, or retrieve information about, ZCCREXX processing.
+### ZCBUILDDATE
+This variable is automatically set to the build date and time of the running version of ZCCREXX.
 ### ZCVERB
 This variable is automatically set to the name of the last verb processed by ZCCREXX.
 ### ZCDESCRIPTION
