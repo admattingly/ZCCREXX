@@ -10,7 +10,7 @@ copro_index = 0     /* set the index of the card to be queried  */
 rule_array_count        = 1
 rule_array              = "ACPOINTS"
 target_pci_coprocessor  = copro_index
-reply_data_block_length = 32768
+reply_data_block_length = 40000
 masks_length            = 32
 "CSFPCI"
 if return_code <> 0 then do
@@ -117,3 +117,4 @@ source_text = ascii_text
 code_table  = '00000000'x
 "CSNBXAE"
 return target_text
+
